@@ -1,4 +1,4 @@
-# scaff ![LICENSE=MIT](https://img.shields.io/crates/l/scaff?style=flat-square)
+# scaff
 
 Painless scaffolding of the boring part of setting up projects that
 people other than you can use.
