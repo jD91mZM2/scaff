@@ -1,0 +1,4 @@
+[imports]
+nix-bare = "nix-bare.tar.gz"
+nix-rust = "nix-rust.tar.gz"
+license-mit = "license-mit.tar.gz"
