@@ -5,7 +5,8 @@ nix-shell = "nix-shell.tar.gz"
 nix-rust = "nix-rust.tar.gz"
 nix-rust-legacy = "nix-rust-legacy.tar.gz"
 
-# Licenses
+# Documents
+readme = "readme.tar.gz"
 license-mit = "license-mit.tar.gz"
 
 # Rust tooling
