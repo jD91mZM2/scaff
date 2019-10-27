@@ -105,6 +105,16 @@ fn main() -> Result<()> {
         config += current;
     }
 
+    if opts.scaffolds.is_empty() {
+        println!("Imported scaffolds:");
+        let mut scaffolds: Vec<_> = config.imports.iter().collect();
+        scaffolds.sort_unstable_by_key(|&(n, _)| n);
+        for (name, resource) in &scaffolds {
+            println!("- {} (points to {})", name, resource);
+        }
+        return Ok(());
+    }
+
     for scaffold in &opts.scaffolds {
         let scaffold = config
             .imports

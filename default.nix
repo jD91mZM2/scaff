@@ -9,19 +9,10 @@ let
   };
 in
 
-{ pkgsFn ? import pinnedNixpkgs }:
+{ pkgs ? import pinnedNixpkgs {} }:
 
 let
-  mozOverlay = import (builtins.fetchTarball https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz);
-  pkgs = pkgsFn { overlays = [ mozOverlay ]; };
-  rustPlatform = let
-    rust = pkgs.latest.rustChannels.stable.rust;
-  in pkgs.makeRustPlatform {
-    cargo = rust;
-    rustc = rust;
-  };
-
-  inherit (pkgs) lib;
+  inherit (pkgs) lib rustPlatform;
 in rustPlatform.buildRustPackage {
   name = "scaff";
   src = lib.sourceByRegex ./. [
@@ -30,7 +21,7 @@ in rustPlatform.buildRustPackage {
     ''^build\.rs$''
   ];
 
-  cargoSha256 = "0bpmfw4gd32xdca5hvwvkirjrkb2kkjvlqssw43y2bckld3wrk3y";
+  cargoSha256 = "050wwl4z0h8xja6c8sgcxc0zyfbdn9rrkcwkzrvyd43bdkvfn9qz";
 
   nativeBuildInputs = with pkgs; [ pkgconfig ];
   buildInputs = with pkgs; [ openssl ];
