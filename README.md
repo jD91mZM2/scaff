@@ -10,3 +10,13 @@ build derivations, whatever really. All thanks to the awesome
 ## Example use
 
 [![asciicast](https://asciinema.org/a/PtKWiSQynFvVoGs1ozdoiJX99.svg)](https://asciinema.org/a/PtKWiSQynFvVoGs1ozdoiJX99)
+
+## How it works
+
+`scaff` will basically download a tarball, run tera on everything, and
+extract out everything from any directory named `scaff-out`. The
+reason for not extracting the whole tarball is to support hidden files
+that you could potentially include from tera, and also to support
+downloading a git repository directly from GitHub/GitLab without
+including the root directory or any other non-relevant files like
+readmes.
