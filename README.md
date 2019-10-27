@@ -23,19 +23,21 @@ readmes.
 
 ## Getting it
 
-You can get it using cargo, the official rust package manager:
+In order to fetch `scaff` with all its native dependencies, I
+recommend using the Nix package manager. There's also an optional
+binary cache available through [Cachix](https://jd91mzm2.cachix.org/).
+
+```sh
+cachix use jd91mzm2 # optional
+nix-env -if https://gitlab.com/jD91mZM2/scaff/-/archive/master.tar.gz
+```
+
+Alternatively, you can use the official rust package manager cargo,
+although that will require you to install rust, a C compiler, and
+openssl.
 
 ```sh
 cargo install scaff
-```
-
-You can also use Nix, although the `default.nix` embedded in this
-repository is slow to compile. The GitLab CI will continously update a
-binary cache you can use with [Cachix](https://jd91mzm2.cachix.org/).
-
-```sh
-cachix use jd91mzm2
-nix-env -if https://gitlab.com/jD91mZM2/scaff/-/archive/master.tar.gz
 ```
 
 ## Don't bloat down your repositories

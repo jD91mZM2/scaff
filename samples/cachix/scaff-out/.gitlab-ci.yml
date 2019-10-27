@@ -17,6 +17,7 @@ cache-nix-build:
   image: nixos/nix
   only:
     - master
+    - gitlab-ci
   before_script:
     - nix-channel --list
     - nix-env -iA nixpkgs.git
