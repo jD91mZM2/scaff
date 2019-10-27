@@ -1,6 +1,7 @@
 [imports]
 # Nix stuff
 cachix = "cachix.tar.gz"
+nixpkgs-rust = "nixpkgs-rust.tar.gz"
 nix-shell = "nix-shell.tar.gz"
 nix-rust = "nix-rust.tar.gz"
 nix-rust-legacy = "nix-rust-legacy.tar.gz"

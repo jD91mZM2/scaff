@@ -21,9 +21,19 @@ downloading a git repository directly from GitHub/GitLab without
 including the root directory or any other non-relevant files like
 readmes.
 
+### Standard library
+
+The following parameters are passed into Tera:
+
+| Name    | Type                            | Value                           |
+|---------|---------------------------------|---------------------------------|
+| project | string                          | Name of the current directory   |
+| name    | string                          | `git config --global user.name` |
+| query   | fn (prompt?, default?) -> value | Query the user for input        |
+
 ## Getting it
 
-In order to fetch `scaff` with all its native dependencies, I
+In order to fetch `scaff` with all its system dependencies, I
 recommend using the Nix package manager. There's also an optional
 binary cache available through [Cachix](https://jd91mzm2.cachix.org/).
 

@@ -1,10 +1,11 @@
 use std::{
     collections::HashMap,
     fs::{self, OpenOptions},
-    io::{ErrorKind, Read, Write},
+    io::{self, prelude::*, ErrorKind},
     mem,
     ops::AddAssign,
     path::Path,
+    sync::Mutex,
 };
 
 use anyhow::{anyhow, Context as _, Error, Result};
@@ -13,7 +14,7 @@ use log::{debug, info};
 use serde::{Deserialize, Serialize};
 use structopt::StructOpt;
 use tar::{Archive, EntryType};
-use tera::{Context, Tera};
+use tera::{Context, Tera, Value};
 
 #[derive(StructOpt)]
 struct Opt {
@@ -152,6 +153,33 @@ fn main() -> Result<()> {
         tera.add_raw_templates(templates.iter().map(|(p, c)| (&**p, &**c)).collect())
             .map_err(|err| anyhow!("{}", err))
             .context("failed to add templates to tera engine")?;
+
+        let editor = Mutex::new(rustyline::Editor::<()>::new());
+
+        tera.register_function("query", move |args: &HashMap<String, Value>| {
+            let prompt = args.get("prompt")
+                .and_then(Value::as_str)
+                .unwrap_or_else(|| "Input for query without valid prompt");
+            let default = args.get("default");
+            let prompt = match default {
+                Some(Value::String(def)) => format!("{} [{}]: ", prompt, def),
+                Some(Value::Number(def)) => format!("{} [{}]: ", prompt, def),
+                Some(Value::Bool(def))   => format!("{} [{}]: ", prompt, def),
+                Some(_) => format!("{} [has default]: ", prompt),
+                None => format!("{}: ", prompt),
+            };
+            let _ = io::stdout().flush();
+
+            let mut editor = editor.lock().unwrap();
+            let line = editor.readline(&prompt).map_err(|err| err.to_string())?;
+            editor.add_history_entry(&line);
+
+            Ok(if default.is_some() && line.is_empty() {
+                default.unwrap().clone()
+            } else {
+                Value::String(line)
+            })
+        });
 
         let mut context = Context::new();
         {
