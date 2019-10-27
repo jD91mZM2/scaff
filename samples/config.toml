@@ -1,5 +1,14 @@
 [imports]
+# Nix stuff
 nix-bare = "nix-bare.tar.gz"
 nix-rust = "nix-rust.tar.gz"
 nix-rust-legacy = "nix-rust-legacy.tar.gz"
+
+# Licenses
 license-mit = "license-mit.tar.gz"
+
+# Rust tooling
+rustfmt = "rustfmt.tar.gz"
+
+# Groups
+group-rust = "group-rust.tar.gz"
