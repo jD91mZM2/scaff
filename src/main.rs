@@ -1,3 +1,20 @@
+#![warn(
+    // Harden built-in lints
+    missing_copy_implementations,
+    missing_debug_implementations,
+
+    // Harden clippy lints
+    clippy::cargo_common_metadata,
+    clippy::clone_on_ref_ptr,
+    clippy::dbg_macro,
+    clippy::decimal_literal_representation,
+    clippy::float_cmp_const,
+    clippy::get_unwrap,
+    clippy::integer_arithmetic,
+    clippy::integer_division,
+    clippy::pedantic,
+)]
+
 use std::{
     collections::HashMap,
     fs::{self, OpenOptions},
@@ -42,7 +59,7 @@ struct Config {
     imports: HashMap<String, Resource>,
 }
 impl Config {
-    pub fn resolve(&mut self, location: Resource) -> Result<()> {
+    pub fn resolve(&mut self, location: &Resource) -> Result<()> {
         let imports = mem::replace(&mut self.imports, HashMap::default());
         self.imports = imports
             .into_iter()
@@ -78,7 +95,7 @@ fn main() -> Result<()> {
             Ok(content) => {
                 config = toml::from_str(&content).context("failed to parse config's toml")?;
                 config
-                    .resolve(Resource::PathBuf(path))
+                    .resolve(&Resource::PathBuf(path))
                     .context("failed to resolve config paths")?;
             },
             Err(ref err) if err.kind() == ErrorKind::NotFound => {},
@@ -101,7 +118,7 @@ fn main() -> Result<()> {
         let mut current: Config =
             toml::from_str(&content).context("failed to parse import's toml")?;
         current
-            .resolve(import)
+            .resolve(&import)
             .context("failed to resolve config paths")?;
         config += current;
     }
@@ -109,9 +126,9 @@ fn main() -> Result<()> {
     if opts.scaffolds.is_empty() {
         println!("Imported scaffolds:");
         let mut scaffolds: Vec<_> = config.imports.iter().collect();
-        scaffolds.sort_unstable_by_key(|&(n, _)| n);
+        scaffolds.sort_unstable();
         for (name, resource) in &scaffolds {
-            println!("- {} (points to {})", name, resource);
+            println!("- {}\t(points to {})", name, resource);
         }
         return Ok(());
     }
@@ -174,34 +191,37 @@ fn main() -> Result<()> {
             let line = editor.readline(&prompt).map_err(|err| err.to_string())?;
             editor.add_history_entry(&line);
 
-            Ok(if default.is_some() && line.is_empty() {
-                default.unwrap().clone()
-            } else {
-                Value::String(line)
+            Ok(match default {
+                Some(default) if line.is_empty() => {
+                    default.clone()
+                },
+                _ => Value::String(line),
             })
         });
 
-        let mut context = Context::new();
+        let mut stdlib = Context::new();
         {
             let current_dir = std::env::current_dir().context("failed to get current directory")?;
-            let project = current_dir
+            let dirname = current_dir
                 .file_name()
                 .context("failed to get current directory's filename")?
                 .to_str()
                 .context("cwd's filename is not utf-8")?;
-            context.insert("project", project);
+            stdlib.insert("project", dirname); // DEPRECATED
+            stdlib.insert("dirname", dirname);
         }
         {
             let config = git2::Config::open_default().context("failed to get git config")?;
             let name = config
                 .get_string("user.name")
                 .context("failed to get git username")?;
-            context.insert("name", &name);
+            stdlib.insert("name", &name); // DEPRECATED
+            stdlib.insert("user", &name);
         }
 
         for (path_str, _) in &templates {
             let content = tera
-                .render(&path_str, &context)
+                .render(&path_str, &stdlib)
                 .map_err(|err| anyhow!("{}", err))
                 .context("failed to render template with tera engine")?;
 

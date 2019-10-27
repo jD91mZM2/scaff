@@ -13,7 +13,7 @@ in package.overrideAttrs (attrs: {
     repo = pname;
     rev = version;
 
-    sha256 = "0rqlxxl58dpfvm2idhi0vzinraf4bgiapmawiih9wxs599fnhm3y";
+    sha256 = "0000000000000000000000000000000000000000000000000000";
   };
 
   postInstall = ''

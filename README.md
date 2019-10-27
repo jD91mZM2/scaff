@@ -27,8 +27,8 @@ The following parameters are passed into Tera:
 
 | Name    | Type                            | Value                           |
 |---------|---------------------------------|---------------------------------|
-| project | string                          | Name of the current directory   |
-| name    | string                          | `git config --global user.name` |
+| dirname | string                          | Name of the current directory   |
+| user    | string                          | `git config --global user.name` |
 | query   | fn (prompt?, default?) -> value | Query the user for input        |
 
 ## Getting it
