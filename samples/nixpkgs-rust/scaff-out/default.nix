@@ -1,7 +1,7 @@
 { callPackage, lib, fetchFromGitLab }:
 
 let
-  pname = "{{ project }}";
+  pname = "{{ dirname }}";
   version = "{{ query(prompt = "Version", default = "0.1.0") }}";
 
   package = (callPackage ./Cargo.nix {}).rootCrate.build;
@@ -9,7 +9,7 @@ in package.overrideAttrs (attrs: {
   name = "${pname}-${version}";
 
   src = fetchFromGitLab {
-    owner = "{{ name }}";
+    owner = "{{ user }}";
     repo = pname;
     rev = version;
 
@@ -24,7 +24,7 @@ in package.overrideAttrs (attrs: {
   meta = with lib; {
     description = "{{ query(prompt = "Description") }}";
     license = licenses.mit;
-    maintainers = with maintainers; [ jD91mZM2 ];
+    maintainers = with maintainers; [ {{ user }} ];
     platforms = platforms.unix;
   };
 })

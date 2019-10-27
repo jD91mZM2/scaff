@@ -1,13 +1,13 @@
 {% set bucket = name | lower -%}
 {% set url = "https://gitlab.com/" ~ name ~ "/" ~ project -%}
 
-# {{ project }} ![Crates.io](https://img.shields.io/crates/v/{{ project }})
+# {{ dirname }} ![Crates.io](https://img.shields.io/crates/v/{{ dirname }})
 
 WRITE SHORT DESCRIPTION HERE
 
 ## Getting it
 
-Installing `{{ project }}` is smoothest with the
+Installing `{{ dirname }}` is smoothest with the
 [Nix](https://nixos.org/nix/) package manager, which will fetch all
 the required system dependencies. There's also an optional binary
 cache available using [Cachix](https://{{ bucket }}.cachix.org/).
@@ -22,7 +22,7 @@ cargo. However, that will require you to fetch all system dependencies
 yourself.
 
 ```sh
-cargo install {{ project }}
+cargo install {{ dirname }}
 ```
 
 List of features and system dependencies. This may sometimes be out of

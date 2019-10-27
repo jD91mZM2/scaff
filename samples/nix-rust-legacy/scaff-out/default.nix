@@ -25,7 +25,7 @@ let
 
   inherit (pkgs) lib;
 in rustPlatform.buildRustPackage {
-  name = "{{ project }}";
+  name = "{{ dirname }}";
   src = lib.sourceByRegex ./. [
     ''^src(/.*|$)''
     ''^Cargo\.(toml|lock)$''

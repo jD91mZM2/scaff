@@ -4,7 +4,7 @@ let
   mozOverlay = import (builtins.fetchTarball https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz);
   crateOverlay = self: super: {
     defaultCrateOverrides = super.defaultCrateOverrides // {
-      {{ project }} = attrs: {
+      {{ dirname }} = attrs: {
         buildInputs = attrs.buildInputs ++ (with self; [ /* openssl */ ]);
       };
     };
