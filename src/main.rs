@@ -91,6 +91,10 @@ fn main() -> Result<()> {
         path.push("scaff");
         path.push("config.toml");
 
+        // When resolving relative links, do it relative to the
+        // pointed-to file in case of a symlink
+        path = path.canonicalize().context("failed to find config's real path - does it exist?")?;
+
         match fs::read_to_string(&path) {
             Ok(content) => {
                 config = toml::from_str(&content).context("failed to parse config's toml")?;
