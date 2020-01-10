@@ -3,6 +3,6 @@
 (pkgs.callPackage ./Cargo.nix {}).rootCrate.build.overrideAttrs (_attrs: {
   postInstall = ''
     # Remove pointless file which can cause collisions
-    rm $out/lib/link
+    rm $out/lib/link || true
   '';
 })
