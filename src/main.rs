@@ -91,15 +91,13 @@ fn main() -> Result<()> {
         path.push("scaff");
         path.push("config.toml");
 
-        // When resolving relative links, do it relative to the
-        // pointed-to file in case of a symlink
-        path = path.canonicalize().context("failed to find config's real path - does it exist?")?;
-
         match fs::read_to_string(&path) {
             Ok(content) => {
                 config = toml::from_str(&content).context("failed to parse config's toml")?;
+
+                let absolute = path.canonicalize().context("failed to canonicalize path")?;
                 config
-                    .resolve(&Resource::PathBuf(path))
+                    .resolve(&Resource::PathBuf(absolute))
                     .context("failed to resolve config paths")?;
             },
             Err(ref err) if err.kind() == ErrorKind::NotFound => {},
