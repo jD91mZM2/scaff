@@ -2,7 +2,7 @@
 name = "scaff"
 description = "Painless scaffolding of the boring part of setting up projects that people other than you can use."
 repository = "https://gitlab.com/jD91mZM2/scaff"
-version = "0.1.2"
+version = "0.1.3"
 authors = ["jD91mZM2 <me@krake.one>"]
 edition = "2018"
 license = "MIT"
@@ -12,11 +12,11 @@ exclude = ["samples/**"]
 readme = "README.md"
 
 [dependencies]
-anyhow = "=1.0.13"
+anyhow = "1.0.34"
 dirs = "2.0.2"
 env_logger = "0.7.1"
 git2 = "0.10.1"
-just-fetch = { version = "0.1.1", features = ["serde"] }
+just-fetch = { version = "0.1.2", features = ["serde"] }
 log = "0.4.8"
 serde = { version = "1.0.101", features = ["derive"] }
 structopt = "0.3.3"

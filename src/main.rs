@@ -66,7 +66,7 @@ impl Config {
             .map(|(key, value)| {
                 location
                     .clone()
-                    .join(&value)
+                    .join(value)
                     .map(|joined| (key, joined))
                     .map_err(Error::from)
             })
