@@ -2642,7 +2642,7 @@ rec {
       };
       "scaff" = rec {
         crateName = "scaff";
-        version = "0.1.3";
+        version = "0.1.4";
         edition = "2018";
         crateBin = [
           { name = "scaff"; path = "src/main.rs"; }
