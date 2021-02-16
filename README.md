@@ -1,3 +1,7 @@
+# THIS IS BLOAT
+
+Use [inc](https://gitlab.com/jD91mZM2/inc) instead
+
 # scaff ![Crates.io](https://img.shields.io/crates/v/scaff)
 
 Painless scaffolding of the boring part of setting up projects that
